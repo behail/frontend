@@ -1,4 +1,5 @@
-export const BASE_URL = "http://localhost:3000";
+export const BASE_URL = "https://mern-backend-uv3z.onrender.com";
+// export const BASE_URL = "http://localhost:3000";
 export const GetAllSongs_URL = BASE_URL;
 export const AddSong_URL = `${BASE_URL}/add-song`;
 export const EditSong_URL = `${BASE_URL}/edit-song/`;
