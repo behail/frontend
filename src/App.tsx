@@ -1,24 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Statistics from "./components/stastics/Statistics";
+import SongList from "./components/SongList";
+import { Text, Spacer } from "./styledSystem/StyledSystemComponents";
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className="container">
+      <header>
+        <Spacer />
+        <Text color="#000">Addis</Text> <Text color="#a8329e">Music</Text>
+        <Spacer />
       </header>
+      <main className="wrapper">
+        <SongList />
+        <Statistics />
+      </main>
     </div>
   );
 }
