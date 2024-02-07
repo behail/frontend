@@ -10,6 +10,7 @@ import { SongType } from "../store/types";
 import AddSongModal from "./AddSong";
 import ComponentWrapper from "./ComponentWrapper";
 import toast, { Toaster } from "react-hot-toast";
+import { motion } from "framer-motion";
 
 import {
   Table,
@@ -71,112 +72,118 @@ const SongHomePage: React.FC<SongProps> = () => {
 
   return (
     <div className="wrapper">
-      <div className="table-header">
-        <h2>Song List</h2>
-        <Button onClick={() => setIsModalOpen(true)} color="#a8329e">
-          Add Song
-        </Button>
-        <AddSongModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
-      </div>
-      <ComponentWrapper headerTitle="" errors={errors} isLoading={isLoading}>
-        <Table>
-          <thead>
-            <tr>
-              <Th> Title </Th>
-              <Th> Alibum </Th>
-              <Th> Artist </Th>
-              <Th> Genre </Th>
-              <Th> Actions </Th>
-            </tr>
-          </thead>
-          <tbody>
-            {songsList &&
-              songsList.map((song, index) => (
-                <tr key={song._id}>
-                  <Td>
-                    {editIndex === index ? (
-                      <Input
-                        type="text"
-                        value={editedSongTitle || song.title}
-                        onChange={(e) =>
-                          setEditedSongTitle(e.target.value || song.title)
-                        }
-                      />
-                    ) : (
-                      song.title
-                    )}
-                  </Td>
-                  <Td>
-                    {editIndex === index ? (
-                      <Input
-                        type="text"
-                        value={editedSongAlbum || song.album}
-                        onChange={(e) =>
-                          setEditedSongAlbum(e.target.value || song.album)
-                        }
-                      />
-                    ) : (
-                      song.album
-                    )}
-                  </Td>
-                  <Td>
-                    {editIndex === index ? (
-                      <Input
-                        type="text"
-                        value={editedSongArtist || song.artist}
-                        onChange={(e) =>
-                          setEditedSongArtist(e.target.value || song.artist)
-                        }
-                      />
-                    ) : (
-                      song.artist
-                    )}
-                  </Td>
-                  <Td>
-                    {editIndex === index ? (
-                      <Input
-                        type="text"
-                        value={editedSongGenre || song.genre}
-                        onChange={(e) =>
-                          setEditedSongGenre(e.target.value || song.genre)
-                        }
-                      />
-                    ) : (
-                      song.genre
-                    )}
-                  </Td>
-                  <Td>
-                    {editIndex === index ? (
-                      <>
-                        <Button onClick={(e) => handleSaveEditSong(e, song)}>
-                          Save
-                        </Button>
-                        <Button onClick={(e) => setEditIndex(-1)}>
-                          Cancel
-                        </Button>
-                      </>
-                    ) : (
-                      <>
-                        <Button onClick={() => setEditIndex(index)}>
-                          Edit
-                        </Button>
-                        <Button
-                          onClick={() => handleDeleteSong(song._id)}
-                          color="red"
-                        >
-                          Delete
-                        </Button>
-                      </>
-                    )}
-                  </Td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
-      </ComponentWrapper>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        <div className="table-header">
+          <h2>Song List</h2>
+          <Button onClick={() => setIsModalOpen(true)} color="#a8329e">
+            Add Song
+          </Button>
+          <AddSongModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
+        </div>
+        <ComponentWrapper headerTitle="" errors={errors} isLoading={isLoading}>
+          <Table>
+            <thead>
+              <tr>
+                <Th> Title </Th>
+                <Th> Alibum </Th>
+                <Th> Artist </Th>
+                <Th> Genre </Th>
+                <Th> Actions </Th>
+              </tr>
+            </thead>
+            <tbody>
+              {songsList &&
+                songsList.map((song, index) => (
+                  <tr key={song._id}>
+                    <Td>
+                      {editIndex === index ? (
+                        <Input
+                          type="text"
+                          value={editedSongTitle || song.title}
+                          onChange={(e) =>
+                            setEditedSongTitle(e.target.value || song.title)
+                          }
+                        />
+                      ) : (
+                        song.title
+                      )}
+                    </Td>
+                    <Td>
+                      {editIndex === index ? (
+                        <Input
+                          type="text"
+                          value={editedSongAlbum || song.album}
+                          onChange={(e) =>
+                            setEditedSongAlbum(e.target.value || song.album)
+                          }
+                        />
+                      ) : (
+                        song.album
+                      )}
+                    </Td>
+                    <Td>
+                      {editIndex === index ? (
+                        <Input
+                          type="text"
+                          value={editedSongArtist || song.artist}
+                          onChange={(e) =>
+                            setEditedSongArtist(e.target.value || song.artist)
+                          }
+                        />
+                      ) : (
+                        song.artist
+                      )}
+                    </Td>
+                    <Td>
+                      {editIndex === index ? (
+                        <Input
+                          type="text"
+                          value={editedSongGenre || song.genre}
+                          onChange={(e) =>
+                            setEditedSongGenre(e.target.value || song.genre)
+                          }
+                        />
+                      ) : (
+                        song.genre
+                      )}
+                    </Td>
+                    <Td>
+                      {editIndex === index ? (
+                        <>
+                          <Button onClick={(e) => handleSaveEditSong(e, song)}>
+                            Save
+                          </Button>
+                          <Button onClick={(e) => setEditIndex(-1)}>
+                            Cancel
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <Button onClick={() => setEditIndex(index)}>
+                            Edit
+                          </Button>
+                          <Button
+                            onClick={() => handleDeleteSong(song._id)}
+                            color="red"
+                          >
+                            Delete
+                          </Button>
+                        </>
+                      )}
+                    </Td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
+        </ComponentWrapper>
+      </motion.div>
 
       <Toaster
         toastOptions={{
