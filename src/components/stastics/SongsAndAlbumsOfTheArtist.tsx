@@ -8,57 +8,34 @@ interface SongsInGenreProps {
   isLoading: boolean;
   errors: string;
 }
+interface ArtistData {
+  artist: string;
+  albums: string[];
+  songs: string[];
+}
 
 const SongsAndAlbumsOfTheArtist: React.FC<SongsInGenreProps> = ({
   songs,
   isLoading,
   errors,
 }) => {
-  const songsByArtist: { [artist: string]: number } = {};
-  const albumsByArtist: { [artist: string]: number } = {};
-  songs.forEach((song) => {
-    if (song.artist in songsByArtist) {
-      songsByArtist[song.artist]++;
-    } else {
-      songsByArtist[song.artist] = 1;
-    }
-    if (song.album in albumsByArtist) {
-      albumsByArtist[song.album]++;
-    } else {
-      albumsByArtist[song.album] = 1;
-    }
+  const artistSongAlbum = songs.map((song) => {
+    return { artist: song.artist, album: song.album, song: song.title };
   });
-  const songsInGenres: { [genre: string]: number } = {};
-  songs.forEach((song) => {
-    if (song.genre in songsInGenres) {
-      songsInGenres[song.genre]++;
+
+  const artistsData: ArtistData[] = [];
+  artistSongAlbum.forEach(({ artist, album, song }) => {
+    const artistData = artistsData.find((data) => data.artist === artist);
+    if (artistData) {
+      if (!artistData.albums.includes(album)) {
+        artistData.albums.push(album);
+      }
+      artistData.songs.push(song);
     } else {
-      songsInGenres[song.genre] = 1;
+      artistsData.push({ artist, albums: [album], songs: [song] });
     }
   });
 
-  const artistsData: {
-    [artist: string]: { songsCount: number; albumsCount: number };
-  } = {};
-  // Merge songsByArtist and albumsByArtist
-  for (const artist in songsByArtist) {
-    if (songsByArtist.hasOwnProperty(artist)) {
-      artistsData[artist] = {
-        songsCount: songsByArtist[artist],
-        albumsCount: albumsByArtist[artist] || 0, // Default to 0 if artist has no albums
-      };
-    }
-  }
-
-  // Add artists with albums but no songs
-  for (const artist in albumsByArtist) {
-    if (albumsByArtist.hasOwnProperty(artist) && !artistsData[artist]) {
-      artistsData[artist] = {
-        songsCount: 0,
-        albumsCount: albumsByArtist[artist],
-      };
-    }
-  }
   return (
     <StasticsComponentWrapper
       headerTitle="Number of songs & albums each artist has"
@@ -74,15 +51,13 @@ const SongsAndAlbumsOfTheArtist: React.FC<SongsInGenreProps> = ({
           </tr>
         </thead>
         <tbody>
-          {Object.entries(artistsData).map(
-            ([artist, { songsCount, albumsCount }]) => (
-              <tr key={artist}>
-                <Td>{artist}</Td>
-                <Td>{songsCount}</Td>
-                <Td>{albumsCount}</Td>
-              </tr>
-            )
-          )}
+          {artistsData.map(({ artist, albums, songs }) => (
+            <tr key={artist}>
+              <Td>{artist}</Td>
+              <Td>{albums.length}</Td>
+              <Td>{songs.length}</Td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </StasticsComponentWrapper>
